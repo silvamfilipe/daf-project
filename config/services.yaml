@@ -15,13 +15,17 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php,*Command.php}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Application\:
+        resource: '../src/Application/*Handler.php'
+        public: true
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -45,3 +49,28 @@ services:
         class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineRefreshTokensRepository
         tags: ['league.refresh.tokens.repository', 'refresh.tokens.repository']
         autowire: true
+
+    # Tactician command bus
+    League\Tactician\CommandBus:
+        class: League\Tactician\CommandBus
+        arguments:
+            $middleware: ['@command.bus.middleware']
+
+    command.bus.middleware:
+        class: League\Tactician\Handler\CommandHandlerMiddleware
+        arguments:
+            $commandNameExtractor: '@command.bus.name.extractor'
+            $handlerLocator: '@command.bus.handler.locator'
+            $methodNameInflector: '@command.bus.method.name.inflector'
+
+    command.bus.name.extractor:
+        class: League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor
+
+    command.bus.method.name.inflector:
+        class: League\Tactician\Handler\MethodNameInflector\HandleInflector
+
+    command.bus.handler.locator:
+        class: App\Infrastructure\CommandBus\ClassNameHandlerLocator
+        public: true
+        arguments:
+            $container: '@service_container'
