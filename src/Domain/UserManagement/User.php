@@ -12,6 +12,7 @@ namespace App\Domain\UserManagement;
 use App\Domain\UserManagement\User\Email;
 use App\Domain\UserManagement\User\Password;
 use App\Domain\UserManagement\User\UserId;
+use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 
@@ -19,27 +20,38 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
  * User
  *
  * @package App\Domain\UserManagement
+ *
+ * @ORM\Entity()
+ * @ORM\Table(name="users")
  */
 class User implements UserEntityInterface, JsonSerializable
 {
 
     /**
      * @var UserId
+     *
+     * @ORM\Id()
+     * @ORM\Column(type="UserId", name="id")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $userId;
 
     /**
      * @var string
+     *
+     * @ORM\Column()
      */
     private $name;
 
     /**
      * @var Email
+     * @ORM\Column(type="Email")
      */
     private $email;
 
     /**
      * @var Password
+     * @ORM\Column(type="Password")
      */
     private $password;
 

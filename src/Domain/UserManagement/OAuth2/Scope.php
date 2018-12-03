@@ -9,22 +9,32 @@
 
 namespace App\Domain\UserManagement\OAuth2;
 
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 
 /**
  * Scope
  *
  * @package App\Domain\UserManagement\OAuth2
+ *
+ * @ORM\Entity()
+ * @ORM\Table(name="scopes")
  */
 class Scope implements ScopeEntityInterface
 {
     /**
      * @var string
+     *
+     * @ORM\Id();
+     * @ORM\Column(name="id")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $identifier;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="text")
      */
     private $description;
 

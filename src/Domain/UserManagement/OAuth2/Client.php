@@ -9,32 +9,46 @@
 
 namespace App\Domain\UserManagement\OAuth2;
 
+use Doctrine\ORM\Mapping as ORM;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 /**
  * Client
  *
  * @package App\Domain\UserManagement\OAuth2
+ *
+ * @ORM\Entity()
+ * @ORM\Table(name="clients")
  */
 class Client implements ClientEntityInterface
 {
     /**
      * @var string
+     *
+     * @ORM\Id();
+     * @ORM\Column(name="id")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $identifier;
 
     /**
      * @var string
+     *
+     * @ORM\Column()
      */
     private $name;
 
     /**
      * @var string|null
+     *
+     * @ORM\Column(nullable=true)
      */
     private $secret;
 
     /**
      * @var array
+     *
+     * @ORM\Column(type="array", nullable=true, name="redirect_uri")
      */
     private $redirectUri;
 
