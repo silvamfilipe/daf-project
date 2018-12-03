@@ -41,4 +41,11 @@ class EmailSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(Comparable::class);
         $this->equalsTo(new Email($this->email))->shouldBe(true);
     }
+
+    function it_throws_invalid_argument_exception_for_invalid_email_addresses()
+    {
+        $this->beConstructedWith('test');
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->duringInstantiation();
+    }
 }

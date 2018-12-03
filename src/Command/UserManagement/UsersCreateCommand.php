@@ -47,6 +47,11 @@ final class UsersCreateCommand extends Command
     private $email;
 
     /**
+     * @var string
+     */
+    private $password;
+
+    /**
      * UsersCreateCommand constructor.
      * @param CommandBus $commandBus
      */
@@ -69,7 +74,7 @@ final class UsersCreateCommand extends Command
         ;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
         $this->style = new SymfonyStyle($input, $output);
@@ -78,9 +83,12 @@ final class UsersCreateCommand extends Command
         $this->email = new Email($input->getArgument('email'));
     }
 
-    public function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output)
     {
+        $this->style->title('Add a new user');
         parent::interact($input, $output);
+        $response = $this->style->askHidden('Please provided a password');
+        $this->password =  new User\Password($response);
     }
 
     /**
@@ -88,7 +96,6 @@ final class UsersCreateCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->style->title('Add a new user');
         /** @var User $user */
         $user = $this->commandBus->handle(new CreateUserCommand($this->userName, $this->email));
 

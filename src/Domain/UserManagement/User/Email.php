@@ -32,6 +32,9 @@ final class Email implements Stringable, JsonSerializable, Comparable
      */
     public function __construct(string $mail)
     {
+        if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+            throw new \InvalidArgumentException("Invalid e-mail address.");
+        }
         $this->mail = $mail;
     }
 
