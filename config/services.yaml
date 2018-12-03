@@ -25,3 +25,23 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    League\OAuth2\Server\Repositories\UserRepositoryInterface:
+        class: App\Infrastructure\Persistence\Doctrine\UserManagement\DoctrineUsersRepository
+        tags: ['league.users.repository', 'users.repository']
+        autowire: true
+    League\OAuth2\Server\Repositories\ClientRepositoryInterface:
+        class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineClientsRepository
+        tags: ['league.clients.repository', 'clients.repository']
+        autowire: true
+    League\OAuth2\Server\Repositories\ScopeRepositoryInterface:
+        class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineScopesRepository
+        tags: ['league.scopes.repository', 'scopes.repository']
+        autowire: true
+    League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface:
+        class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineAccessTokensRepository
+        tags: ['league.access.tokens.repository', 'access.tokens.repository']
+        autowire: true
+    League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface:
+        class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineRefreshTokensRepository
+        tags: ['league.refresh.tokens.repository', 'refresh.tokens.repository']
+        autowire: true
