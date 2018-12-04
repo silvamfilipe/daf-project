@@ -60,7 +60,7 @@ final class DoctrineClientsRepository implements ClientsRepository
             return null;
         }
 
-        if ($mustValidateSecret && $clientSecret === $client->secret()) {
+        if ($mustValidateSecret && $clientSecret !== $client->secret()) {
             return null;
         }
 

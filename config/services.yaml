@@ -30,26 +30,54 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    League\OAuth2\Server\Repositories\UserRepositoryInterface:
-        class: App\Infrastructure\Persistence\Doctrine\UserManagement\DoctrineUsersRepository
-        tags: ['league.users.repository', 'users.repository']
-        autowire: true
-    League\OAuth2\Server\Repositories\ClientRepositoryInterface:
-        class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineClientsRepository
-        tags: ['league.clients.repository', 'clients.repository']
-        autowire: true
-    League\OAuth2\Server\Repositories\ScopeRepositoryInterface:
-        class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineScopesRepository
-        tags: ['league.scopes.repository', 'scopes.repository']
-        autowire: true
-    League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface:
-        class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineAccessTokensRepository
-        tags: ['league.access.tokens.repository', 'access.tokens.repository']
-        autowire: true
-    League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface:
-        class: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineRefreshTokensRepository
-        tags: ['league.refresh.tokens.repository', 'refresh.tokens.repository']
-        autowire: true
+    users.repository:
+        alias: App\Infrastructure\Persistence\Doctrine\UserManagement\DoctrineUsersRepository
+
+    clients.repository:
+        alias: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineClientsRepository
+
+    scopes.repository:
+        alias: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineScopesRepository
+
+    access.tokens.repository:
+        alias: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineAccessTokensRepository
+
+    refresh.tokens.repository:
+        alias: App\Infrastructure\Persistence\Doctrine\UserManagement\OAuth2\DoctrineRefreshTokensRepository
+
+    oauth2.password.grant:
+        class: League\OAuth2\Server\Grant\PasswordGrant
+        arguments:
+            - '@users.repository'
+            - '@refresh.tokens.repository'
+        calls:
+            - method: setRefreshTokenTTL
+              arguments:
+                  - '@refresh.token.ttl'
+
+    refresh.token.ttl:
+        class: DateInterval
+        arguments:
+            - 'P1M'
+    access.token.ttl:
+        class: DateInterval
+        arguments:
+            - 'PT1H'
+
+    League\OAuth2\Server\AuthorizationServer:
+        class: League\OAuth2\Server\AuthorizationServer
+        tags: ['league.authorization.server', 'authorization.server']
+        arguments:
+            $clientRepository: '@clients.repository'
+            $accessTokenRepository: '@access.tokens.repository'
+            $scopeRepository: '@scopes.repository'
+            $privateKey: '%env(OAUTH_PRIVATE_KEY)%'
+            $encryptionKey: '%env(OAUTH_ENC_KEY)%'
+        calls:
+            - method: enableGrantType
+              arguments:
+                  - '@oauth2.password.grant'
+                  - '@access.token.ttl'
 
     # Tactician command bus
     League\Tactician\CommandBus:
