@@ -10,7 +10,9 @@
 namespace App\Domain\UserManagement\OAuth2;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
@@ -80,5 +82,22 @@ class AccessToken implements AccessTokenEntityInterface
     public function __construct()
     {
         $this->identifier = Uuid::uuid4()->toString();
+    }
+
+    /**
+     * Return an array of scopes associated with the token.
+     *
+     * @return ScopeEntityInterface[]
+     */
+    public function getScopes()
+    {
+        if (
+            $this->scopes instanceof ArrayCollection ||
+            $this->scopes instanceof PersistentCollection
+        ) {
+            $this->scopes = $this->scopes->toArray();
+        }
+
+        return array_values($this->scopes);
     }
 }

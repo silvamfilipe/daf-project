@@ -86,6 +86,7 @@ final class DoctrineAccessTokensRepository implements AccessTokenRepositoryInter
      */
     public function revokeAccessToken($tokenId)
     {
+        /** @var AccessToken $token */
         $token = $this->entityManager->find(AccessToken::class, $tokenId);
         if (!$token) {
             return;

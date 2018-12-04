@@ -39,8 +39,8 @@ class RefreshToken implements RefreshTokenEntityInterface
     /**
      * @var AccessTokenEntityInterface
      *
-     * @ORM\ManyToOne(targetEntity="App\Domain\UserManagement\OAuth2\AccessToken")
-     * @ORM\JoinColumn(name="access_token_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="App\Domain\UserManagement\OAuth2\AccessToken", cascade={"remove"})
+     * @ORM\JoinColumn(name="access_token_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $accessToken;
 

@@ -55,6 +55,15 @@ services:
               arguments:
                   - '@refresh.token.ttl'
 
+    oauth2.refresh.token.grant:
+        class: League\OAuth2\Server\Grant\RefreshTokenGrant
+        arguments:
+            - '@refresh.tokens.repository'
+        calls:
+            - method: setRefreshTokenTTL
+              arguments:
+                  - '@refresh.token.ttl'
+
     refresh.token.ttl:
         class: DateInterval
         arguments:
@@ -78,6 +87,10 @@ services:
               arguments:
                   - '@oauth2.password.grant'
                   - '@access.token.ttl'
+            - method: enableGrantType
+              arguments:
+                - '@oauth2.refresh.token.grant'
+                - '@access.token.ttl'
 
     # Tactician command bus
     League\Tactician\CommandBus:
