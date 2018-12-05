@@ -1,11 +1,7 @@
 test:
-  image: registry.gitlab.com/silvam-filipe/forum-daf:latest
-  cache:
-    paths:
-      - vendor/
   before_script:
-    - composer install
+    - docker-compose run --rm php gosu www-data composer install
   script:
-    - vendor/bin/phpspec run -fdot
+    - docker-compose run --rm php gosu www-data run -fdot
   tags:
     - build-machine
