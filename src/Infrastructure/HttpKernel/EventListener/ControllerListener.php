@@ -12,6 +12,7 @@ namespace App\Infrastructure\HttpKernel\EventListener;
 use App\Controller\UserManagement\OAuth2\AuthenticatedControllerInterface;
 use App\Domain\UserManagement\User\UserId;
 use App\Domain\UserManagement\UsersRepository;
+use App\Infrastructure\HttpKernel\Oauth2Exception;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
@@ -58,15 +59,15 @@ final class ControllerListener
         $psr7Factory = new DiactorosFactory();
         $httpFoundationFactory = new HttpFoundationFactory();
 
-        //try {
+        try {
             $request = $this->resourceServer->validateAuthenticatedRequest($psr7Factory->createRequest($event->getRequest()));
             $this->loadUser($request->getAttribute('oauth_user_id', null), $controller);
-        /*} catch (OAuthServerException $e) {
+        } catch (OAuthServerException $e) {
             $event->stopPropagation();
             $response = $e->generateHttpResponse(new Response());
-            throw new
-            return $httpFoundationFactory->createResponse($response);
-        }*/
+            $exception = new Oauth2Exception("OAuth 2.0 error");
+            throw $exception->withResponse($httpFoundationFactory->createResponse($response));
+        }
 
         return null;
     }

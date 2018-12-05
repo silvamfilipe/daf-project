@@ -47,7 +47,7 @@ final class UsersCreateCommand extends Command
     private $email;
 
     /**
-     * @var string
+     * @var User\Password
      */
     private $password;
 
@@ -97,7 +97,7 @@ final class UsersCreateCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var User $user */
-        $user = $this->commandBus->handle(new CreateUserCommand($this->userName, $this->email));
+        $user = $this->commandBus->handle(new CreateUserCommand($this->userName, $this->email, $this->password));
 
         $this->style->success("User {$user->name()} successfully created!");
         return 0;
