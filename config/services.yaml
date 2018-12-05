@@ -80,7 +80,7 @@ services:
             $clientRepository: '@clients.repository'
             $accessTokenRepository: '@access.tokens.repository'
             $scopeRepository: '@scopes.repository'
-            $privateKey: '%env(OAUTH_PRIVATE_KEY)%'
+            $privateKey: '%kernel.root_dir%/../%env(OAUTH_PRIVATE_KEY)%'
             $encryptionKey: '%env(OAUTH_ENC_KEY)%'
         calls:
             - method: enableGrantType
@@ -97,11 +97,11 @@ services:
         tags: ['league.resource.server', 'resource.server']
         arguments:
             $accessTokenRepository: '@access.tokens.repository'
-            $publicKey: '%env(OAUTH_PUBLIC_KEY)%'
+            $publicKey: '%kernel.root_dir%/../%env(OAUTH_PUBLIC_KEY)%'
 
     App\Infrastructure\HttpKernel\EventListener\ControllerListener:
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, priority: -10 }
+            - { name: kernel.event_listener, event: kernel.controller, priority: 10 }
 
     # Tactician command bus
     League\Tactician\CommandBus:
