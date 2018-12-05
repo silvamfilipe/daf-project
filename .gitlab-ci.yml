@@ -1,7 +1,7 @@
 test:
   before_script:
-    - docker-compose run --rm php composer install
+    - docker-compose run --rm php composer install --no-progress --no-suggest
   script:
-    - docker-compose run --rm php run -fdot
+    - docker-compose run --rm php phpspec run -fdot
   tags:
     - build-machine
