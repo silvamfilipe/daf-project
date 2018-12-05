@@ -1,4 +1,4 @@
-mage: registry.gitlab.com/silvam-filipe/forum-daf:latest
+image: registry.gitlab.com/silvam-filipe/forum-daf:latest
 
 # Select what we should cache between builds
 cache:
