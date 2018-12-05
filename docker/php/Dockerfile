@@ -1,0 +1,1 @@
+FROM fsilva/php:7.2
