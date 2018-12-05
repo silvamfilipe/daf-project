@@ -1,15 +1,11 @@
-image: registry.gitlab.com/silvam-filipe/forum-daf:latest
-
-# Select what we should cache between builds
-cache:
-  paths:
-    - vendor/
-
-before_script:
-  - composer install
-
-# Run our tests
-# If Xdebug was installed you can generate a coverage report and see code coverage metrics.
 test:
+  image: registry.gitlab.com/silvam-filipe/forum-daf:latest
+  cache:
+    paths:
+      - vendor/
+  before_script:
+    - composer install
   script:
     - vendor/bin/phpspec run -fdot
+  tags:
+    - build-machine
