@@ -1,7 +1,39 @@
+stages:
+  - test
+  - build
+  - deploy
+
 test:
+  stage: test
   before_script:
     - docker-compose run --rm php composer install --no-progress --no-suggest
   script:
     - docker-compose run --rm php phpspec run -fdot
+  tags:
+    - build-machine
+
+build:
+  stage: build
+  before_script:
+    - docker-compose run --rm php composer install --no-dev --no-progress --no-suggest
+  script:
+    - docker image build -t hub.fsilva.info/forum-daf-api:\$(git describe --abbrev=0 --tags)-$CI_JOB_ID .
+    - docker image tag hub.fsilva.info/forum-daf-api:\$(git describe --abbrev=0 --tags)-$CI_JOB_ID hub.fsilva.info/forum-daf-api:latest
+    - docker image push hub.fsilva.info/forum-daf-api
+    - cp build/deploy-stack.yml ./
+  tags:
+    - build-machine
+
+deploy:
+  stage: deploy
+  script:
+    - export VERSION=\$(git describe --abbrev=0 --tags)-$CI_JOB_ID; sed -i -- \"s/%VER%/\$VERSION/g\" deploy-stack.yml
+    - export DOCKER_HOST=swarm-master:23799; docker stack deploy -c deploy-stack.yml --with-registry-auth forum-daf
+    - unset DOCKER_HOST
+  environment:
+    name: production
+    url: https://forum-daf.fsilva.info
+  only:
+    - master
   tags:
     - build-machine

@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+  app:
+    image: hub.fsilva.info/forum-daf-api:%VER%
+    ports:
+      - 80
+    networks:
+      - traefik_web
+      - services_net
+
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=traefik_web"
+        - "traefik.backend=Forum-DAF-API-"
+        - "traefik.frontend.rule=Host:forum-daf.fsilva.info"
+        - "traefik.port=80"
+    configs:
+      - source: forum-daf-api
+        target: /var/www/app/.env.local
+
+configs:
+  forum-daf-api:
+     external: true
+
+networks:
+  traefik_web:
+    external: true
+  services_net:
+    external: true
