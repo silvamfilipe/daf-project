@@ -11,6 +11,7 @@ COPY public public
 COPY src src
 COPY vendor vendor
 COPY .env .env
+COPY composer.json composer.json
 
 RUN chown www-data:root config/*.key
 RUN chmod 0660 config/*.key
