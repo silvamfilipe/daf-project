@@ -42,7 +42,25 @@
         "schemas": {
             "User": {
                 "title": "User",
-                "description": "User"
+                "description": "User",
+                "properties": {
+                    "userId": {
+                        "description": "User identifier",
+                        "type": "string",
+                        "example": "e1026e90-9b21-4b6d-b06e-9c592f7bdb82"
+                    },
+                    "name": {
+                        "description": "User full name",
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "description": "User's e-mail address",
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -50,7 +68,7 @@
                 "type": "oauth2",
                 "flows": {
                     "password": {
-                        "tokenUrl": "https://forum-daf.fsilva.info/users/access-token",
+                        "tokenUrl": "https://forum-daf.fsilva.info/auth/access-token",
                         "scopes": {
                             "forum.usage": "Can use the forum to place questions, give answer and vote.",
                             "user.management": "Manage own user data"

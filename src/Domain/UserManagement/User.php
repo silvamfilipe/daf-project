@@ -24,6 +24,7 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
  * @ORM\Entity()
  * @ORM\Table(name="users")
  * @IgnoreAnnotation("OA\Schema")
+ * @IgnoreAnnotation("@OA\Property")
  *
  * @OA\Schema(
  *     description="User",
@@ -39,6 +40,12 @@ class User implements UserEntityInterface, JsonSerializable
      * @ORM\Id()
      * @ORM\Column(type="UserId", name="id")
      * @ORM\GeneratedValue(strategy="NONE")
+     *
+     * @OA\Property(
+     *     type="string",
+     *     description="User identifier",
+     *     example="e1026e90-9b21-4b6d-b06e-9c592f7bdb82"
+     * )
      */
     private $userId;
 
@@ -46,12 +53,23 @@ class User implements UserEntityInterface, JsonSerializable
      * @var string
      *
      * @ORM\Column()
+     *
+     * @OA\Property(
+     *     description="User full name",
+     *     example="John Doe"
+     * )
      */
     private $name;
 
     /**
      * @var Email
      * @ORM\Column(type="Email")
+     *
+     * @OA\Property(
+     *     type="string",
+     *     description="User's e-mail address",
+     *     example="john.doe@example.com"
+     * )
      */
     private $email;
 

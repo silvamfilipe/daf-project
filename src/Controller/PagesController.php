@@ -55,7 +55,7 @@ final class PagesController extends AbstractController
  *   securityScheme="OAuth2.0-Token",
  *   type="oauth2",
  *   @OA\Flow(
- *     tokenUrl="https://forum-daf.fsilva.info/users/access-token",
+ *     tokenUrl="https://forum-daf.fsilva.info/auth/access-token",
  *     flow="password",
  *     scopes={
  *         "forum.usage": "Can use the forum to place questions, give answer and vote.",
