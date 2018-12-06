@@ -6,7 +6,7 @@ stages:
 test:
   stage: test
   before_script:
-    - docker-compose run --rm php composer install --no-progress --no-suggest
+    - docker-compose run --rm php gosu www-data composer install --no-progress --no-suggest
   script:
     - docker-compose run --rm php phpspec run -fdot
   tags:
@@ -15,10 +15,10 @@ test:
 build:
   stage: build
   before_script:
-    - docker-compose run --rm php composer install --no-dev --no-progress --no-suggest
+    - docker-compose run --rm php gosu www-data composer install --no-dev --no-progress --no-suggest
   script:
-    - docker image build -t hub.fsilva.info/forum-daf-api:\$(git describe --abbrev=0 --tags)-$CI_JOB_ID .
-    - docker image tag hub.fsilva.info/forum-daf-api:\$(git describe --abbrev=0 --tags)-$CI_JOB_ID hub.fsilva.info/forum-daf-api:latest
+    - docker image build -t hub.fsilva.info/forum-daf-api:\$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID .
+    - docker image tag hub.fsilva.info/forum-daf-api:\$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID hub.fsilva.info/forum-daf-api:latest
     - docker image push hub.fsilva.info/forum-daf-api
     - cp build/deploy-stack.yml ./
   tags:
@@ -27,7 +27,7 @@ build:
 deploy:
   stage: deploy
   script:
-    - export VERSION=\$(git describe --abbrev=0 --tags)-$CI_JOB_ID; sed -i -- \"s/%VER%/\$VERSION/g\" deploy-stack.yml
+    - export VERSION=\$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID; sed -i -- \"s/%VER%/\$VERSION/g\" deploy-stack.yml
     - export DOCKER_HOST=swarm-master:23799; docker stack deploy -c deploy-stack.yml --with-registry-auth forum-daf
     - unset DOCKER_HOST
   environment:
