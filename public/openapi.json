@@ -44,6 +44,20 @@
                 "title": "User",
                 "description": "User"
             }
+        },
+        "securitySchemes": {
+            "OAuth2.0-Token": {
+                "type": "oauth2",
+                "flows": {
+                    "password": {
+                        "tokenUrl": "https://forum-daf.fsilva.info/users/access-token",
+                        "scopes": {
+                            "forum.usage": "Can use the forum to place questions, give answer and vote.",
+                            "user.management": "Manage own user data"
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
