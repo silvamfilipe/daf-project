@@ -24,7 +24,7 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
  * @ORM\Entity()
  * @ORM\Table(name="users")
  * @IgnoreAnnotation("OA\Schema")
- * @IgnoreAnnotation("@OA\Property")
+ * @IgnoreAnnotation("OA\Property")
  *
  * @OA\Schema(
  *     description="User",
