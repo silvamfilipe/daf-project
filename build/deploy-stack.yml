@@ -20,6 +20,9 @@ services:
     configs:
       - source: forum-daf-api
         target: /var/www/app/.env.local
+    environment:
+      - USE_XDEBUG=no
+      - WEBROOT=public
 
 configs:
   forum-daf-api:
