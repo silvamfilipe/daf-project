@@ -7,16 +7,16 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Domain\UserManagement\User;
+namespace App\Domain\QuestionManagement\Answer;
 
 use App\Domain\Common\RootAggregatorId;
 
 /**
- * UserId
+ * AnswerId
  *
- * @package App\Domain\UserManagement\User
+ * @package App\Domain\QuestionManagement\Answer
  */
-final class UserId extends RootAggregatorId
+final class AnswerId extends RootAggregatorId
 {
 
 }

@@ -66,3 +66,24 @@ DirectoryIndex index.php index.html
         # RedirectTemp cannot be used instead
     </IfModule>
 </IfModule>
+
+# ##############################################################################
+# # CROSS-ORIGIN RESOURCE SHARING (CORS) #
+# ##############################################################################
+# ------------------------------------------------------------------------------
+# | Cross-origin requests |
+# ------------------------------------------------------------------------------
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Headers "origin, x-requested-with, content-type, authorization"
+    Header always set Access-Control-Allow-Methods "GET,POST,PATCH,PUT,HEAD,DELETE,OPTIONS"
+
+
+    <FilesMatch "\.(eot|otf|tt[cf]|woff2?)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_METHOD} OPTIONS
+    RewriteRule ^(.*)$ $1 [R=200,L]
+</IfModule>
