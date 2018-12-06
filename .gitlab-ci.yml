@@ -18,7 +18,7 @@ build:
     - docker-compose run --rm php gosu www-data composer install --no-dev --no-progress --no-suggest
   script:
     - docker image build -t hub.fsilva.info/forum-daf-api:$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID .
-    - docker image tag hub.fsilva.info/forum-daf-api:\$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID hub.fsilva.info/forum-daf-api:latest
+    - docker image tag hub.fsilva.info/forum-daf-api:$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID hub.fsilva.info/forum-daf-api:latest
     - docker image push hub.fsilva.info/forum-daf-api
     - cp build/deploy-stack.yml ./
   tags:
