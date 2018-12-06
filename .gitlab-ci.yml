@@ -20,13 +20,13 @@ build:
     - docker image build -t hub.fsilva.info/forum-daf-api:$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID .
     - docker image tag hub.fsilva.info/forum-daf-api:$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID hub.fsilva.info/forum-daf-api:latest
     - docker image push hub.fsilva.info/forum-daf-api
-    - cp build/deploy-stack.yml ./
   tags:
     - build-machine
 
 deploy:
   stage: deploy
   script:
+    - cp build/deploy-stack.yml ./
     - export VERSION=$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID; sed -i -- "s/%VER%/$VERSION/g" deploy-stack.yml
     - export DOCKER_HOST=swarm-master:23799; docker stack deploy -c deploy-stack.yml --with-registry-auth forum-daf
     - unset DOCKER_HOST
