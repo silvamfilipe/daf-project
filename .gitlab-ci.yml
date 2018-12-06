@@ -27,7 +27,7 @@ build:
 deploy:
   stage: deploy
   script:
-    - export VERSION=$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID; sed -i -- \"s/%VER%/\$VERSION/g\" deploy-stack.yml
+    - export VERSION=$(git describe --abbrev=0 --tags)-$CI_PIPELINE_ID; sed -i -- "s/%VER%/$VERSION/g" deploy-stack.yml
     - export DOCKER_HOST=swarm-master:23799; docker stack deploy -c deploy-stack.yml --with-registry-auth forum-daf
     - unset DOCKER_HOST
   environment:
