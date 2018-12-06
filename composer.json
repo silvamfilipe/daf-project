@@ -55,7 +55,8 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "create-doc": "openapi --output public/openapi.json --format json src"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -67,6 +68,7 @@
         }
     },
     "require-dev": {
-        "phpspec/phpspec": "^5.1"
+        "phpspec/phpspec": "^5.1",
+        "zircote/swagger-php": "^3.0"
     }
 }

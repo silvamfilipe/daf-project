@@ -23,6 +23,12 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
  *
  * @ORM\Entity()
  * @ORM\Table(name="users")
+ * @IgnoreAnnotation("OA\Schema")
+ *
+ * @OA\Schema(
+ *     description="User",
+ *     title="User"
+ * )
  */
 class User implements UserEntityInterface, JsonSerializable
 {

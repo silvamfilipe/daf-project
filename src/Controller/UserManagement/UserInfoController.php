@@ -34,3 +34,24 @@ final class UserInfoController extends AbstractController implements Authenticat
         return new Response(json_encode($this->currentUser()), 200, ['content-type' => 'application/json']);
     }
 }
+
+/**
+ * @OA\Get(
+ *     path="/users/me",
+ *     operationId="userInfo",
+ *     summary="Current user information",
+ *     tags={"Users"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="Current user information",
+ *         @OA\MediaType(
+ *             mediaType="application/json",
+ *             @OA\Schema(ref="#/components/schemas/User")
+ *         )
+ *     ),
+ *     security={
+ *         {"OAuth2.0-Token": {"user.management"}}
+ *     }
+ *
+ * )
+ */
