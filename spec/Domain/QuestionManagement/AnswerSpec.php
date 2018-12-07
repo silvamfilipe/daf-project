@@ -6,7 +6,6 @@ use App\Domain\QuestionManagement\Answer;
 use App\Domain\QuestionManagement\Question;
 use App\Domain\UserManagement\User;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AnswerSpec extends ObjectBehavior
 {
@@ -68,5 +67,12 @@ class AnswerSpec extends ObjectBehavior
         $this->addVote(Answer\Vote::positive())->shouldBe($this->getWrappedObject());
         $this->positiveVotes()->shouldBe(1);
         $this->negativeVotes()->shouldBe(0);
+    }
+
+    function it_can_be_voted_negatively()
+    {
+        $this->addVote(Answer\Vote::negative())->shouldBe($this->getWrappedObject());
+        $this->positiveVotes()->shouldBe(0);
+        $this->negativeVotes()->shouldBe(1);
     }
 }

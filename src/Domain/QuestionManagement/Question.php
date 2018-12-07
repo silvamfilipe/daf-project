@@ -53,6 +53,11 @@ class Question
     private $datePublished;
 
     /**
+     * @var Answer[]
+     */
+    private $answers = [];
+
+    /**
      * Creates a question
      *
      * @param User   $user
@@ -105,6 +110,12 @@ class Question
         return $this->tags;
     }
 
+    /**
+     * @param string $title
+     * @param string $body
+     *
+     * @return Question
+     */
     public function update(string $title, string $body): Question
     {
         $this->body = $body;
@@ -112,6 +123,11 @@ class Question
         return $this;
     }
 
+    /**
+     * @param array $tags
+     *
+     * @return Question
+     */
     public function addTags(array $tags): Question
     {
         $newTags = $this->tags;
@@ -128,5 +144,53 @@ class Question
 
         $this->tags = $newTags;
         return $this;
+    }
+
+    /**
+     * @return Answer[]
+     */
+    public function answers(): array
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param Answer $answer
+     *
+     * @return Question
+     */
+    public function addAnswer(Answer $answer): Question
+    {
+        $this->answers[(string) $answer->answerId()] = $answer;
+        return $this;
+    }
+
+    /**
+     * @param Answer $answer
+     * @return Question
+     */
+    public function removeAnswer(Answer $answer): Question
+    {
+        $copy = $this->answers;
+        $new = [];
+        foreach ($copy as $current) {
+            if ($current->answerId()->equalsTo($answer->answerId())) {
+                continue;
+            }
+            $new[(string) $current->answerId()] = $current;
+        }
+        $this->answers = $new;
+        return $this;
+    }
+
+    public function correctAnswer(): ?Answer
+    {
+        foreach ($this->answers as $answer) {
+            if ($answer->isCorrectAnswer()) {
+                return $answer;
+            }
+        }
+
+        return null;
     }
 }

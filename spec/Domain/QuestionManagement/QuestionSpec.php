@@ -2,6 +2,7 @@
 
 namespace spec\App\Domain\QuestionManagement;
 
+use App\Domain\QuestionManagement\Answer;
 use App\Domain\QuestionManagement\Question;
 use App\Domain\UserManagement\User;
 use PhpSpec\ObjectBehavior;
@@ -94,5 +95,74 @@ class QuestionSpec extends ObjectBehavior
         $tags->shouldBeArray();
         $tags->shouldHaveCount(3);
         $tags[2]->shouldBe($tag);
+    }
+
+    /**
+     * @param Answer|\PhpSpec\Wrapper\Collaborator $answer
+     * @throws \Exception
+     */
+    function it_has_a_list_of_answers(Answer $answer)
+    {
+        $answerId = new Answer\AnswerId();
+        $answer->answerId()->willReturn($answerId);
+
+        $answers = $this->answers();
+        $answers->shouldBeArray();
+        $answers->shouldHaveCount(0);
+
+        $this->addAnswer($answer)->shouldBe($this->getWrappedObject());
+
+        $answers = $this->answers();
+        $answers->shouldBeArray();
+        $answers->shouldHaveCount(1);
+        $answers[(string) $answerId]->shouldBe($answer);
+    }
+
+    /**
+     * @param Answer|\PhpSpec\Wrapper\Collaborator $answer1
+     * @param Answer|\PhpSpec\Wrapper\Collaborator $answer2
+     * @throws \Exception
+     */
+    function it_can_remove_a_answer(Answer $answer1, Answer $answer2)
+    {
+        $answerId1 = new Answer\AnswerId();
+        $answer1->answerId()->willReturn($answerId1);
+
+        $answerId2 = new Answer\AnswerId();
+        $answer2->answerId()->willReturn($answerId2);
+
+        $this->addAnswer($answer1)->addAnswer($answer2);
+
+        $answers = $this->answers();
+        $answers->shouldHaveCount(2);
+        $answers[(string) $answerId2]->shouldBe($answer2);
+
+        $this->removeAnswer($answer1)->shouldBe($this->getWrappedObject());
+
+        $answers = $this->answers();
+        $answers->shouldHaveCount(1);
+        $answers[(string) $answerId2]->shouldBe($answer2);
+    }
+
+    /**
+     * @param Answer|\PhpSpec\Wrapper\Collaborator $answer1
+     * @param Answer|\PhpSpec\Wrapper\Collaborator $answer2
+     * @throws \Exception
+     */
+    function it_can_have_a_correct_answer(Answer $answer1, Answer $answer2)
+    {
+        $this->correctAnswer()->shouldBeNull();
+
+        $answerId1 = new Answer\AnswerId();
+        $answer1->answerId()->willReturn($answerId1);
+        $answer1->isCorrectAnswer()->willReturn(false);
+
+        $answerId2 = new Answer\AnswerId();
+        $answer2->answerId()->willReturn($answerId2);
+        $answer2->isCorrectAnswer()->willReturn(true);
+
+        $this->addAnswer($answer1)->addAnswer($answer2);
+
+        $this->correctAnswer()->shouldBe($answer2);
     }
 }
