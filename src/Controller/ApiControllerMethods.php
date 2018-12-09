@@ -79,16 +79,17 @@ trait ApiControllerMethods
      *
      * @param string $message
      *
+     * @param int $estatus
      * @return Response
      */
-    protected function badRequest(string $message): Response
+    protected function badRequest(string $message, $status = Response::HTTP_BAD_REQUEST): Response
     {
         $response = new Response(
             json_encode([
                 'error' => 'Bad request',
                 'message' => $message
             ]),
-            Response::HTTP_BAD_REQUEST,
+            $status,
             ['content-type' => 'application/json']
         );
 

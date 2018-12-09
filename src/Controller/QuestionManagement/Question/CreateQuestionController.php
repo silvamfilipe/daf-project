@@ -15,7 +15,6 @@ use App\Controller\UserManagement\OAuth2\AuthenticatedControllerInterface;
 use App\Controller\UserManagement\OAuth2\AuthenticatedControllerMethods;
 use League\Tactician\CommandBus;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -23,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @package App\Controller\QuestionManagement\Question
  */
-class CreateQuestionController implements AuthenticatedControllerInterface
+final class CreateQuestionController implements AuthenticatedControllerInterface
 {
 
     use AuthenticatedControllerMethods, ApiControllerMethods;

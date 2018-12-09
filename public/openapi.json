@@ -43,6 +43,46 @@
                 ]
             }
         },
+        "/questions/{questionId}": {
+            "get": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Retrieve the question with provided ID",
+                "description": "Returns a question",
+                "operationId": "getQuestionById",
+                "parameters": [
+                    {
+                        "name": "questionId",
+                        "in": "path",
+                        "description": "ID of question to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The newlly crated question",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Question"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            }
+        },
         "/users/me": {
             "get": {
                 "tags": [
@@ -193,6 +233,14 @@
                     },
                     "datePublished": {
                         "$ref": "#/components/schemas/DateTime"
+                    },
+                    "answers": {
+                        "title": "Answers",
+                        "description": "Question answers",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Answer"
+                        }
                     }
                 },
                 "type": "object"

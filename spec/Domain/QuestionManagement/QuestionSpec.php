@@ -176,6 +176,7 @@ class QuestionSpec extends ObjectBehavior
             'tags' => $this->tags,
             'datePublished' => $this->datePublished(),
             'user' => $user,
+            'answers' => $this->answers(),
             'correctAnswer' => $this->correctAnswer()
         ]);
     }

@@ -120,6 +120,11 @@ class Question implements JsonSerializable
      *
      * ORM\OneToMany(targetEntity="App\Domain\QuestionManagement\Answer", mappedBy="question")
      *
+     * @OA\Property(
+     *     description="Question answers",
+     *     title="Answers",
+     *     @OA\Items(ref="#/components/schemas/Answer")
+     * )
      */
     private $answers = [];
 
@@ -220,6 +225,9 @@ class Question implements JsonSerializable
      */
     public function answers(): array
     {
+        if ($this->answers instanceof PersistentCollection) {
+            $this->answers = $this->answers->toArray();
+        }
         return $this->answers;
     }
 
@@ -278,6 +286,7 @@ class Question implements JsonSerializable
             'tags' => $this->tags(),
             'datePublished' => $this->datePublished,
             'user' => $this->user,
+            'answers' => $this->answers(),
             'correctAnswer' => $this->correctAnswer()
         ];
     }
