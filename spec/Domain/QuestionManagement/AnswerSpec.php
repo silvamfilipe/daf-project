@@ -75,4 +75,19 @@ class AnswerSpec extends ObjectBehavior
         $this->positiveVotes()->shouldBe(0);
         $this->negativeVotes()->shouldBe(1);
     }
+
+    function it_can_be_converted_to_json(Question $question, User $user)
+    {
+        $this->shouldBeAnInstanceOf(\JsonSerializable::class);
+        $this->jsonSerialize()->shouldBe([
+            'answerId' => $this->answerId(),
+            'question' => $question,
+            'body' => $this->body,
+            'isCorrectAnswer' => $this->isCorrectAnswer(),
+            'positiveVotes' => $this->positiveVotes(),
+            'negativeVotes' => $this->negativeVotes(),
+            'datePublished' => $this->datePublished(),
+            'user' => $user
+        ]);
+    }
 }

@@ -13,47 +13,113 @@ use App\Domain\QuestionManagement\Question\QuestionId;
 use App\Domain\QuestionManagement\Question\Tag;
 use App\Domain\UserManagement\User;
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use InvalidArgumentException;
+use JsonSerializable;
 
 /**
  * Question
  *
  * @package App\Domain\QuestionManagement
+ *
+ * @ORM\Entity()
+ * @ORM\Table(name="questions")
+ *
+ * @IgnoreAnnotation("OA\Schema")
+ * @IgnoreAnnotation("OA\Property")
+ * @IgnoreAnnotation("OA\Items")
+ *
+ * @OA\Schema(
+ *     title="Question",
+ *     description="Question",
+ * )
  */
-class Question
+class Question implements JsonSerializable
 {
     /**
      * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Domain\UserManagement\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     *
+     * @OA\Property(
+     *     description="User relation",
+     *     title="User",
+     * )
      */
     private $user;
 
     /**
      * @var string
+     *
+     * @ORM\Column()
+     *
+     * @OA\Property(
+     *     description="Question title",
+     *     example="An example question"
+     * )
      */
     private $title;
 
     /**
      * @var string
+     *
+     * @ORM\Column(type="text")
+     *
+     * @OA\Property(
+     *     description="Question body",
+     *     example="How can we create an API with Symfony 4?"
+     * )
      */
     private $body;
 
     /**
-     * @var Tag[]
+     * @var array|Tag[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Domain\QuestionManagement\Question\Tag", cascade={"persist"}, fetch="EAGER")
+     * @ORM\JoinTable(name="question_tags",
+     *      joinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
+     *      )
+     *
+     * @OA\Property(
+     *     description="Question tags",
+     *     title="Tags",
+     *     @OA\Items(ref="#/components/schemas/Tag")
+     * )
      */
     private $tags = [];
 
     /**
      * @var QuestionId
+     *
+     * @ORM\Id()
+     * @ORM\Column(type="QuestionId", name="id")
+     * @ORM\GeneratedValue(strategy="NONE")
+     *
+     *  @OA\Property(
+     *     type="string",
+     *     description="Question identifier",
+     *     example="e1026e90-9b21-4b6d-b06e-9c592f7bdb82"
+     * )
      */
     private $questionId;
 
     /**
      * @var DateTimeImmutable
+     *
+     * @ORM\Column(type="datetime_immutable", name="date_published")
+     *
+     * @OA\Property(ref="#/components/schemas/DateTime")
      */
     private $datePublished;
 
     /**
      * @var Answer[]
+     *
+     * ORM\OneToMany(targetEntity="App\Domain\QuestionManagement\Answer", mappedBy="question")
+     *
      */
     private $answers = [];
 
@@ -107,6 +173,9 @@ class Question
      */
     public function tags(): array
     {
+        if ($this->tags instanceof PersistentCollection) {
+            $this->tags = $this->tags->toArray();
+        }
         return $this->tags;
     }
 
@@ -192,5 +261,24 @@ class Question
         }
 
         return null;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     *
+     * @return mixed data which can be serialized by json_encode(),
+     *               which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'questionId' => $this->questionId,
+            'title' => $this->title,
+            'body' => $this->body,
+            'tags' => $this->tags(),
+            'datePublished' => $this->datePublished,
+            'user' => $this->user,
+            'correctAnswer' => $this->correctAnswer()
+        ];
     }
 }

@@ -32,7 +32,8 @@ final class ExceptionListener
         $response = new Response(
             json_encode([
                 'error' => 'Internal server error',
-                'message' => $exception->getMessage()
+                'message' => $exception->getMessage(),
+                'stackTrace' => $exception->getTrace()
             ]),
             Response::HTTP_INTERNAL_SERVER_ERROR,
             ['content-type' => 'application/json']

@@ -24,6 +24,8 @@ final class AddQuestionHandler
      */
     private $questions;
 
+    use TagRelatedMethods;
+
     /**
      * Creates a AddQuestionHandler
      *
@@ -43,7 +45,22 @@ final class AddQuestionHandler
      */
     public function handle(AddQuestionCommand $command): Question
     {
-        $question = new Question($command->user(), $command->title(), $command->body(), $command->tags());
+        $question = new Question(
+            $command->user(),
+            $command->title(),
+            $command->body(),
+            $this->normalizeTags($command->tags())
+        );
         return $this->questions->add($question);
+    }
+
+    /**
+     * Returns the questions repository
+     *
+     * @return QuestionsRepository
+     */
+    protected function questionsRepository(): QuestionsRepository
+    {
+        return $this->questions;
     }
 }

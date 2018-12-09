@@ -165,4 +165,18 @@ class QuestionSpec extends ObjectBehavior
 
         $this->correctAnswer()->shouldBe($answer2);
     }
+
+    function it_can_be_converted_to_json(User $user)
+    {
+        $this->shouldBeAnInstanceOf(\JsonSerializable::class);
+        $this->jsonSerialize()->shouldBe([
+            'questionId' => $this->questionId(),
+            'title' => $this->title,
+            'body' => $this->body,
+            'tags' => $this->tags,
+            'datePublished' => $this->datePublished(),
+            'user' => $user,
+            'correctAnswer' => $this->correctAnswer()
+        ]);
+    }
 }

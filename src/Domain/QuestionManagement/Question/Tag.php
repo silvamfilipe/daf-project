@@ -11,22 +11,51 @@ namespace App\Domain\QuestionManagement\Question;
 
 use App\Domain\QuestionManagement\Question\Tag\TagId;
 use App\Domain\Stringable;
+use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
 /**
  * Tag
  *
  * @package App\Domain\QuestionManagement\Question
+ *
+ * @ORM\Entity()
+ * @ORM\Table(name="tags")
+ *
+ * @IgnoreAnnotation("OA\Schema")
+ * @IgnoreAnnotation("OA\Property")
+ *
+ * @OA\Schema(
+ *     title="Tag",
+ *     description="Tag",
+ * )
  */
 final class Tag implements Stringable, JsonSerializable
 {
     /**
      * @var string
+     *
+     * @ORM\Column()
+     *
+     * @OA\Property(
+     *     description="Tag description",
+     *     example="HTML"
+     * )
      */
     private $description;
 
     /**
      * @var TagId
+     *
+     * @ORM\Id()
+     * @ORM\Column(type="TagId", name="id")
+     * @ORM\GeneratedValue(strategy="NONE")
+     *
+     * @OA\Property(
+     *     type="string",
+     *     description="Tag identifier",
+     *     example="e1026e90-9b21-4b6d-b06e-9c592f7bdb82"
+     * )
      */
     private $tagId;
 

@@ -77,3 +77,13 @@ abstract class RootAggregatorId implements Stringable, JsonSerializable, Compara
         return (bool) $other->uuid->equals($this->uuid);
     }
 }
+
+/**
+ * @OA\Schema(
+ *     schema="DateTime",
+ *     type="object",
+ *     @OA\Property(property="date", type="string", description="Formatted date", example="2018-07-04 23:07:14.000000"),
+ *     @OA\Property(property="timezone_type", type="integer", format="int32", description="Timezone type ID", example="3"),
+ *     @OA\Property(property="timezone", type="string", description="Timezone name", example="Atlantic/Azores")
+ * )
+ */

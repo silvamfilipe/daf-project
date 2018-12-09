@@ -9,6 +9,40 @@
         "version": "v0.1.0"
     },
     "paths": {
+        "/questions": {
+            "post": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Adds a new question for authenticated user",
+                "operationId": "addQuestion",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/AddQuestion"
+                },
+                "responses": {
+                    "400": {
+                        "description": "Missing property or errors regarding data sent."
+                    },
+                    "200": {
+                        "description": "The newlly crated question",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Question"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            }
+        },
         "/users/me": {
             "get": {
                 "tags": [
@@ -40,6 +74,151 @@
     },
     "components": {
         "schemas": {
+            "AddQuestion": {
+                "title": "Add Quesiton",
+                "properties": {
+                    "title": {
+                        "description": "Question title",
+                        "type": "string",
+                        "example": "A simple question"
+                    },
+                    "body": {
+                        "description": "Question main boby",
+                        "type": "string",
+                        "example": "How can we do something?"
+                    },
+                    "tags": {
+                        "description": "Question title",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "PHP7"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "DateTime": {
+                "properties": {
+                    "date": {
+                        "description": "Formatted date",
+                        "type": "string",
+                        "example": "2018-07-04 23:07:14.000000"
+                    },
+                    "timezone_type": {
+                        "description": "Timezone type ID",
+                        "type": "integer",
+                        "format": "int32",
+                        "example": "3"
+                    },
+                    "timezone": {
+                        "description": "Timezone name",
+                        "type": "string",
+                        "example": "Atlantic/Azores"
+                    }
+                },
+                "type": "object"
+            },
+            "Answer": {
+                "title": "Answer",
+                "description": "Answer",
+                "properties": {
+                    "user": {
+                        "title": "User",
+                        "description": "User relation",
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "question": {
+                        "title": "Question",
+                        "description": "Question relation",
+                        "$ref": "#/components/schemas/Question"
+                    },
+                    "body": {
+                        "description": "Answer body",
+                        "type": "string",
+                        "example": "You should do something like..."
+                    },
+                    "answerId": {
+                        "description": "Answer identifier",
+                        "type": "string",
+                        "example": "e1026e90-9b21-4b6d-b06e-9c592f7bdb82"
+                    },
+                    "datePublished": {
+                        "$ref": "#/components/schemas/DateTime"
+                    },
+                    "correctAnswer": {
+                        "description": "Correct answer",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "positiveVotes": {
+                        "description": "Positive votes",
+                        "type": "integer",
+                        "example": 35
+                    },
+                    "negativeVotes": {
+                        "description": "Negative votes",
+                        "type": "integer",
+                        "example": 6
+                    }
+                },
+                "type": "object"
+            },
+            "Question": {
+                "title": "Question",
+                "description": "Question",
+                "properties": {
+                    "user": {
+                        "title": "User",
+                        "description": "User relation",
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "title": {
+                        "description": "Question title",
+                        "type": "string",
+                        "example": "An example question"
+                    },
+                    "body": {
+                        "description": "Question body",
+                        "type": "string",
+                        "example": "How can we create an API with Symfony 4?"
+                    },
+                    "tags": {
+                        "title": "Tags",
+                        "description": "Question tags",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Tag"
+                        }
+                    },
+                    "questionId": {
+                        "description": "Question identifier",
+                        "type": "string",
+                        "example": "e1026e90-9b21-4b6d-b06e-9c592f7bdb82"
+                    },
+                    "datePublished": {
+                        "$ref": "#/components/schemas/DateTime"
+                    }
+                },
+                "type": "object"
+            },
+            "Tag": {
+                "title": "Tag",
+                "description": "Tag",
+                "properties": {
+                    "description": {
+                        "description": "Tag description",
+                        "type": "string",
+                        "example": "HTML"
+                    },
+                    "tagId": {
+                        "description": "Tag identifier",
+                        "type": "string",
+                        "example": "e1026e90-9b21-4b6d-b06e-9c592f7bdb82"
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "title": "User",
                 "description": "User",
@@ -63,6 +242,19 @@
                 "type": "object"
             }
         },
+        "requestBodies": {
+            "AddQuestion": {
+                "description": "Object containing the very minimal inforamtion nedded to create a question",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/AddQuestion"
+                        }
+                    }
+                }
+            }
+        },
         "securitySchemes": {
             "OAuth2.0-Token": {
                 "type": "oauth2",
@@ -82,6 +274,10 @@
         {
             "name": "Users",
             "description": "User related endpoints"
+        },
+        {
+            "name": "Questions",
+            "description": "Questions endpoints"
         }
     ]
 }

@@ -12,6 +12,8 @@ namespace App\Infrastructure\Persistence\Doctrine\QuestionManagement;
 use App\Domain\Exception\QuestionNotFoundException;
 use App\Domain\QuestionManagement\Question;
 use App\Domain\QuestionManagement\Question\QuestionId;
+use App\Domain\QuestionManagement\Question\Tag;
+use App\Domain\QuestionManagement\Question\Tag\TagId;
 use App\Domain\QuestionManagement\QuestionsRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -102,5 +104,38 @@ final class DoctrineQuestionsRepository implements QuestionsRepository
         }
 
         return $question;
+    }
+
+    /**
+     * Retrieve the tag with provided description
+     *
+     * @param string $tag
+     *
+     * @return Tag|null
+     */
+    public function tag(string $tag): ?Tag
+    {
+        $repository = $this->entityManager->getRepository(Tag::class);
+        $existing = $repository->findOneBy(['description' => $tag]);
+
+        return $existing instanceof Tag ? $existing : null;
+    }
+
+    /**
+     * Retrieves the tag with provided tag ID
+     *
+     * @param TagId $tagId
+     *
+     * @return Tag|null
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     */
+    public function tagWithId(TagId $tagId): ?Tag
+    {
+        $tag = $this->entityManager->find(Tag::class, $tagId);
+
+        return $tag instanceof Tag ? $tag : null;
     }
 }

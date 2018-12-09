@@ -11,6 +11,8 @@ namespace App\Domain\QuestionManagement;
 
 use App\Domain\Exception\QuestionNotFoundException;
 use App\Domain\QuestionManagement\Question\QuestionId;
+use App\Domain\QuestionManagement\Question\Tag;
+use App\Domain\QuestionManagement\Question\Tag\TagId;
 
 /**
  * QuestionsRepository
@@ -51,4 +53,22 @@ interface QuestionsRepository
      * @throws QuestionNotFoundException if no question was not found with provided ID
      */
     public function withQuestionId(QuestionId $questionId): Question;
+
+    /**
+     * Retrieve the tag with provided description
+     *
+     * @param string $tag
+     *
+     * @return Tag|null
+     */
+    public function tag(string $tag): ?Tag;
+
+    /**
+     * Retrieves the tag with provided tag ID
+     *
+     * @param TagId $tagId
+     *
+     * @return Tag|null
+     */
+    public function tagWithId(TagId $tagId): ?Tag;
 }
