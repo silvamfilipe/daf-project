@@ -128,11 +128,6 @@
                         "description": "User relation",
                         "$ref": "#/components/schemas/User"
                     },
-                    "question": {
-                        "title": "Question",
-                        "description": "Question relation",
-                        "$ref": "#/components/schemas/Question"
-                    },
                     "body": {
                         "description": "Answer body",
                         "type": "string",

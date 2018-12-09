@@ -53,11 +53,6 @@ class Answer implements JsonSerializable
      *
      * @ORM\ManyToOne(targetEntity="App\Domain\QuestionManagement\Question", inversedBy="answers")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
-     *
-     * @OA\Property(
-     *     description="Question relation",
-     *     title="Question",
-     * )
      */
     private $question;
 

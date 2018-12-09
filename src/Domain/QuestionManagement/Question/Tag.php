@@ -30,7 +30,7 @@ use JsonSerializable;
  *     description="Tag",
  * )
  */
-final class Tag implements Stringable, JsonSerializable
+class Tag implements Stringable, JsonSerializable
 {
     /**
      * @var string
