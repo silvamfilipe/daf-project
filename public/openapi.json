@@ -81,6 +81,82 @@
                         ]
                     }
                 ]
+            },
+            "delete": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Delete a question",
+                "operationId": "deleteQuestion",
+                "parameters": [
+                    {
+                        "name": "questionId",
+                        "in": "path",
+                        "description": "ID of question to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Missing property or errors regarding data sent."
+                    },
+                    "204": {
+                        "description": "Question was delete"
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Updates the question title and body",
+                "operationId": "updateQuestion",
+                "parameters": [
+                    {
+                        "name": "questionId",
+                        "in": "path",
+                        "description": "ID of question to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateQuestion"
+                },
+                "responses": {
+                    "400": {
+                        "description": "Missing property or errors regarding data sent."
+                    },
+                    "200": {
+                        "description": "The updated question",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Question"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
             }
         },
         "/users/me": {
@@ -134,6 +210,22 @@
                             "type": "string",
                             "example": "PHP7"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateQuestion": {
+                "title": "Update Quesiton",
+                "properties": {
+                    "title": {
+                        "description": "Question title",
+                        "type": "string",
+                        "example": "A simple question"
+                    },
+                    "body": {
+                        "description": "Question main boby",
+                        "type": "string",
+                        "example": "How can we do something?"
                     }
                 },
                 "type": "object"
@@ -293,6 +385,17 @@
                     "application/json": {
                         "schema": {
                             "$ref": "#/components/schemas/AddQuestion"
+                        }
+                    }
+                }
+            },
+            "UpdateQuestion": {
+                "description": "Object containing the changed title and body of a question to be updated.",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/UpdateQuestion"
                         }
                     }
                 }
