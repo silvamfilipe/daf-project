@@ -82,6 +82,7 @@ final class DoctrineQuestionsRepository implements QuestionsRepository
     public function remove(Question $question): void
     {
         $this->entityManager->remove($question);
+        $this->entityManager->flush();
     }
 
     /**

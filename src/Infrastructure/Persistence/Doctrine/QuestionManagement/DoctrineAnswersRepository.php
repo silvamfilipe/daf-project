@@ -80,6 +80,7 @@ final class DoctrineAnswersRepository implements AnswersRepository
     public function remove(Answer $answer): void
     {
         $this->entityManager->remove($answer);
+        $this->entityManager->flush();
     }
 
     /**
