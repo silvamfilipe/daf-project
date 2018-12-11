@@ -64,7 +64,8 @@ class PaginationSpec extends ObjectBehavior
             'firstResult' => $this->firstResult()->getWrappedObject(),
             'rows' => $this->rows,
             'rowsPerPage' => $this->rowsPerPage,
-            'currentPage' => $this->currentPage()->getWrappedObject()
+            'currentPage' => $this->currentPage()->getWrappedObject(),
+            'totalPages' => $this->pages()->getWrappedObject()
         ]);
     }
 }
