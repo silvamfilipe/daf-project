@@ -93,5 +93,8 @@ class QuestionGeneralList implements AuthenticatedControllerInterface
  *         description="A list of questions",
  *         @OA\JsonContent(ref="#/components/schemas/ListingQuestion")
  *     ),
+ *     security={
+ *         {"OAuth2.0-Token": {"forum.usage"}}
+ *     }
  * )
  */

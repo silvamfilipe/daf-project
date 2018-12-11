@@ -66,7 +66,14 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -274,7 +281,14 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
             }
         },
         "/users/me": {
