@@ -75,4 +75,15 @@ class QueryResultSpec extends ObjectBehavior
         $this->pagination()->shouldBe($pagination);
         $this->attribute('pagination')->shouldBe($pagination);
     }
+
+    public function it_can_be_converted_to_json()
+    {
+        $this->shouldBeAnInstanceOf(\JsonSerializable::class);
+        $this->jsonSerialize()->shouldBe([
+            'attributes' => [],
+            'data' => $this->data,
+            'count' => 3,
+            'isEmpty' => false
+        ]);
+    }
 }

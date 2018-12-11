@@ -128,7 +128,8 @@ final class Pagination implements JsonSerializable
             'firstResult' => $this->firstResult(),
             'rows' => $this->rows,
             'rowsPerPage' => $this->rowsPerPage,
-            'currentPage' => $this->currentPage()
+            'currentPage' => $this->currentPage(),
+            'totalPages' => $this->pages()
         ];
     }
 }

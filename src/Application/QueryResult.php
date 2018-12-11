@@ -12,6 +12,7 @@ namespace App\Application;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use JsonSerializable;
 use Traversable;
 
 /**
@@ -19,7 +20,7 @@ use Traversable;
  *
  * @package App\Application
  */
-class QueryResult implements IteratorAggregate, Countable
+class QueryResult implements IteratorAggregate, Countable, JsonSerializable
 {
 
     /**
@@ -182,5 +183,21 @@ class QueryResult implements IteratorAggregate, Countable
         $pagination = $this->attribute('pagination');
 
         return $pagination instanceof Pagination ? $pagination : null;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     *
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     *               which is a value of any type other than a resource.
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'attributes' => $this->attributes,
+            'data' => $this->data,
+            'count' => $this->count,
+            'isEmpty' => $this->isEmpty()
+        ];
     }
 }

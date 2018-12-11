@@ -10,6 +10,64 @@
     },
     "paths": {
         "/questions": {
+            "get": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Returns a list of questions",
+                "description": "Returns a paginated list of all questions",
+                "operationId": "getQuestions",
+                "parameters": [
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "Tag name to filter",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "current pagination page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rows",
+                        "in": "query",
+                        "description": "Number of rows per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pattern",
+                        "in": "query",
+                        "description": "Filters result with a search pattern",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of questions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListingQuestion"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Questions"
@@ -159,6 +217,66 @@
                 ]
             }
         },
+        "/my/questions": {
+            "get": {
+                "tags": [
+                    "Questions"
+                ],
+                "summary": "Returns a list of questions",
+                "description": "Returns a paginated list of my questions",
+                "operationId": "getMyQuestions",
+                "parameters": [
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "Tag name to filter",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "current pagination page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rows",
+                        "in": "query",
+                        "description": "Number of rows per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pattern",
+                        "in": "query",
+                        "description": "Filters result with a search pattern",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of user questions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListingQuestion"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/users/me": {
             "get": {
                 "tags": [
@@ -190,6 +308,44 @@
     },
     "components": {
         "schemas": {
+            "ListingQuestion": {
+                "title": "Question",
+                "description": "A Flat Question used in lisings",
+                "properties": {
+                    "questionId": {
+                        "title": "Question ID",
+                        "description": "Question ID",
+                        "type": "string"
+                    },
+                    "user": {
+                        "title": "User",
+                        "description": "Question owner",
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "title": {
+                        "description": "Question title",
+                        "type": "string",
+                        "example": "An example question"
+                    },
+                    "tags": {
+                        "title": "Tags",
+                        "description": "Question tags",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "datePublished": {
+                        "$ref": "#/components/schemas/DateTime"
+                    },
+                    "answersGiven": {
+                        "description": "Answers given",
+                        "type": "integer",
+                        "example": "The number of answers given"
+                    }
+                },
+                "type": "object"
+            },
             "AddQuestion": {
                 "title": "Add Quesiton",
                 "properties": {
