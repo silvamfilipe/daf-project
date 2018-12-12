@@ -53,6 +53,13 @@ class Answer implements JsonSerializable
      *
      * @ORM\ManyToOne(targetEntity="App\Domain\QuestionManagement\Question", inversedBy="answers")
      * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     *
+     * @OA\Property(
+     *     description="Question identifer",
+     *     example="06b116fe-e749-4f95-937d-94c5c4adcfbc",
+     *     type="string",
+     *     property="questionId"
+     * )
      */
     private $question;
 
@@ -63,7 +70,7 @@ class Answer implements JsonSerializable
      *
      * @OA\Property(
      *     description="Answer body",
-     *     example="You should do something like..."
+     *     example="A simple and powerfull answer!",
      * )
      */
     private $body;
@@ -219,7 +226,7 @@ class Answer implements JsonSerializable
     {
         return [
             'answerId' => $this->answerId,
-            'question' => $this->question,
+            'questionId' => $this->question->questionId(),
             'body' => $this->body,
             'isCorrectAnswer' => $this->correctAnswer,
             'positiveVotes' => $this->positiveVotes,

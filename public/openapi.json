@@ -9,6 +9,172 @@
         "version": "v0.1.0"
     },
     "paths": {
+        "/questions/{questionId}/answers": {
+            "post": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Adds an answer",
+                "description": "Adds an answer to the question with the ID provided in the URP path",
+                "operationId": "addAnswer",
+                "parameters": [
+                    {
+                        "name": "questionId",
+                        "in": "path",
+                        "description": "ID of question that will be answered",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/AddAnswer"
+                },
+                "responses": {
+                    "200": {
+                        "description": "The newlly crated question",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Answer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/answers/{answerId}": {
+            "patch": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Updates an answer",
+                "description": "Updates the body of the answer that matches the provided answer ID",
+                "operationId": "updateAnswer",
+                "parameters": [
+                    {
+                        "name": "answerId",
+                        "in": "path",
+                        "description": "ID of answer to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/AddAnswer"
+                },
+                "responses": {
+                    "200": {
+                        "description": "The updated question",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Answer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/answers/{answerId}/vote-up": {
+            "put": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Vote up an answer",
+                "description": "Adds a positive/up vote to the answer that matches the provided answer ID",
+                "operationId": "voteUpAnswer",
+                "parameters": [
+                    {
+                        "name": "answerId",
+                        "in": "path",
+                        "description": "ID of answer to vote",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The updated question",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Answer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/answers/{answerId}/vote-down": {
+            "put": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Vote down an answer",
+                "description": "Adds a negative/down vote to the answer that matches the provided answer ID",
+                "operationId": "voteDownAnswer",
+                "parameters": [
+                    {
+                        "name": "answerId",
+                        "in": "path",
+                        "description": "ID of answer to vote",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The updated question",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Answer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            }
+        },
         "/questions": {
             "get": {
                 "tags": [
@@ -61,7 +227,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ListingQuestion"
+                                    "$ref": "#/components/schemas/QuestionList"
                                 }
                             }
                         }
@@ -276,7 +442,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ListingQuestion"
+                                    "$ref": "#/components/schemas/QuestionList"
                                 }
                             }
                         }
@@ -360,6 +526,17 @@
                 },
                 "type": "object"
             },
+            "AddAnswer": {
+                "title": "AddAnswer",
+                "properties": {
+                    "body": {
+                        "description": "Answer main body",
+                        "type": "string",
+                        "example": "A short and smart answer"
+                    }
+                },
+                "type": "object"
+            },
             "AddQuestion": {
                 "title": "Add Quesiton",
                 "properties": {
@@ -380,6 +557,31 @@
                             "type": "string",
                             "example": "PHP7"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "QuestionList": {
+                "properties": {
+                    "attributes": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ListingQuestion"
+                        }
+                    },
+                    "count": {
+                        "type": "integer",
+                        "example": 32
+                    },
+                    "isEmpty": {
+                        "type": "bool",
+                        "example": false
                     }
                 },
                 "type": "object"
@@ -430,10 +632,15 @@
                         "description": "User relation",
                         "$ref": "#/components/schemas/User"
                     },
+                    "questionId": {
+                        "description": "Question identifer",
+                        "type": "string",
+                        "example": "06b116fe-e749-4f95-937d-94c5c4adcfbc"
+                    },
                     "body": {
                         "description": "Answer body",
                         "type": "string",
-                        "example": "You should do something like..."
+                        "example": "A simple and powerfull answer!"
                     },
                     "answerId": {
                         "description": "Answer identifier",
@@ -548,6 +755,17 @@
             }
         },
         "requestBodies": {
+            "AddAnswer": {
+                "description": "Object containing the very minimal inforamtion nedded to create an answer",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/AddAnswer"
+                        }
+                    }
+                }
+            },
             "AddQuestion": {
                 "description": "Object containing the very minimal inforamtion nedded to create a question",
                 "required": true,
@@ -594,6 +812,10 @@
         {
             "name": "Questions",
             "description": "Questions endpoints"
+        },
+        {
+            "name": "Answers",
+            "description": "Answers endpoints"
         }
     ]
 }

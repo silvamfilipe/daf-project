@@ -37,7 +37,8 @@ trait ApiControllerMethods
      */
     protected function response($data, $status = Response::HTTP_OK): Response
     {
-        $response = new Response(json_encode($data), $status, ['content-type' => 'application/json']);
+        $data = json_encode($data);
+        $response = new Response($data, $status, ['content-type' => 'application/json']);
         return $response;
     }
 

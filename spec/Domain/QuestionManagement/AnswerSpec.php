@@ -11,10 +11,13 @@ class AnswerSpec extends ObjectBehavior
 {
 
     private $body;
+    private $questionId;
 
     function let(User $user, Question $question)
     {
         $this->body = 'Body';
+        $this->questionId = new Question\QuestionId();
+        $question->questionId()->willReturn($this->questionId);
         $this->beConstructedWith($user, $question, $this->body);
     }
 
@@ -81,7 +84,7 @@ class AnswerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(\JsonSerializable::class);
         $this->jsonSerialize()->shouldBe([
             'answerId' => $this->answerId(),
-            'question' => $question,
+            'questionId' => $this->questionId,
             'body' => $this->body,
             'isCorrectAnswer' => $this->isCorrectAnswer(),
             'positiveVotes' => $this->positiveVotes(),

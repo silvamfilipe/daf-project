@@ -89,10 +89,27 @@ class MyQuestionsList implements AuthenticatedControllerInterface
  *     @OA\Response(
  *         response=200,
  *         description="A list of user questions",
- *         @OA\JsonContent(ref="#/components/schemas/ListingQuestion")
+ *         @OA\JsonContent(ref="#/components/schemas/QuestionList")
  *     ),
  *     security={
  *         {"OAuth2.0-Token": {"forum.usage"}}
  *     }
+ * )
+ */
+
+/**
+ * @OA\Schema(
+ *     schema="QuestionList",
+ *     type="object",
+ *     @OA\Property(
+ *          property="attributes",
+ *          type="object",
+ *          @OA\AdditionalProperties(
+ *              type="string"
+ *          )
+ *     ),
+ *     @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/ListingQuestion")),
+ *     @OA\Property(property="count", type="integer", example=32),
+ *     @OA\Property(property="isEmpty", type="bool", example=false),
  * )
  */

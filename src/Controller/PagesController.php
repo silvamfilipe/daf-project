@@ -58,6 +58,13 @@ final class PagesController extends AbstractController
  */
 
 /**
+ * @OA\Tag(
+ *     name="Answers",
+ *     description="Answers endpoints"
+ * )
+ */
+
+/**
  * @OA\SecurityScheme(
  *   securityScheme="OAuth2.0-Token",
  *   type="oauth2",

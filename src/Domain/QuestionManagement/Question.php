@@ -118,7 +118,7 @@ class Question implements JsonSerializable
     /**
      * @var Answer[]
      *
-     * ORM\OneToMany(targetEntity="App\Domain\QuestionManagement\Answer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="App\Domain\QuestionManagement\Answer", mappedBy="question")
      *
      * @OA\Property(
      *     description="Question answers",
