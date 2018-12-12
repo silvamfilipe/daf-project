@@ -53,6 +53,37 @@
             }
         },
         "/answers/{answerId}": {
+            "delete": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Deletes an answer",
+                "description": "Delete  the answer that matches the provided answer ID",
+                "operationId": "deleteAnswer",
+                "parameters": [
+                    {
+                        "name": "answerId",
+                        "in": "path",
+                        "description": "ID of answer to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "The answer was deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            },
             "patch": {
                 "tags": [
                     "Answers"
