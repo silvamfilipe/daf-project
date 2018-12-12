@@ -538,7 +538,7 @@
                 "type": "object"
             },
             "AddQuestion": {
-                "title": "Add Quesiton",
+                "title": "Add Question",
                 "properties": {
                     "title": {
                         "description": "Question title",
@@ -546,7 +546,7 @@
                         "example": "A simple question"
                     },
                     "body": {
-                        "description": "Question main boby",
+                        "description": "Question main body",
                         "type": "string",
                         "example": "How can we do something?"
                     },
@@ -587,7 +587,7 @@
                 "type": "object"
             },
             "UpdateQuestion": {
-                "title": "Update Quesiton",
+                "title": "Update Question",
                 "properties": {
                     "title": {
                         "description": "Question title",
@@ -595,7 +595,7 @@
                         "example": "A simple question"
                     },
                     "body": {
-                        "description": "Question main boby",
+                        "description": "Question main body",
                         "type": "string",
                         "example": "How can we do something?"
                     }

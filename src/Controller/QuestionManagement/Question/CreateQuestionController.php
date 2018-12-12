@@ -95,9 +95,9 @@ final class CreateQuestionController implements AuthenticatedControllerInterface
  *
  * @OA\Schema(
  *     schema="AddQuestion",
- *     title="Add Quesiton",
+ *     title="Add Question",
  *     @OA\Property(property="title", type="string", example="A simple question", description="Question title"),
- *     @OA\Property(property="body", type="string", example="How can we do something?", description="Question main boby"),
+ *     @OA\Property(property="body", type="string", example="How can we do something?", description="Question main body"),
  *     @OA\Property(
  *          property="tags",
  *          type="array",

@@ -112,8 +112,8 @@ final class UpdateQuestionController implements AuthenticatedControllerInterface
  *
  * @OA\Schema(
  *     schema="UpdateQuestion",
- *     title="Update Quesiton",
+ *     title="Update Question",
  *     @OA\Property(property="title", type="string", example="A simple question", description="Question title"),
- *     @OA\Property(property="body", type="string", example="How can we do something?", description="Question main boby"),
+ *     @OA\Property(property="body", type="string", example="How can we do something?", description="Question main body"),
  * )
  */
