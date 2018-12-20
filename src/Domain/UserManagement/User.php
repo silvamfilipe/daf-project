@@ -9,6 +9,7 @@
 
 namespace App\Domain\UserManagement;
 
+use App\Domain\Comparable;
 use App\Domain\UserManagement\User\Email;
 use App\Domain\UserManagement\User\Password;
 use App\Domain\UserManagement\User\UserId;
@@ -31,7 +32,7 @@ use League\OAuth2\Server\Entities\UserEntityInterface;
  *     title="User"
  * )
  */
-class User implements UserEntityInterface, JsonSerializable
+class User implements UserEntityInterface, JsonSerializable, Comparable
 {
 
     /**
@@ -187,5 +188,21 @@ class User implements UserEntityInterface, JsonSerializable
             'name' => $this->name,
             'email' => $this->email,
         ];
+    }
+
+    /**
+     * Returns true if other object is equal to current one
+     *
+     * @param mixed $other
+     *
+     * @return bool
+     */
+    public function equalsTo($other): bool
+    {
+        if (!$other instanceof User) {
+            return false;
+        }
+
+        return $this->userId()->equalsTo($other->userId());
     }
 }

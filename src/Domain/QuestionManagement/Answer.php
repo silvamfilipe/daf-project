@@ -9,6 +9,7 @@
 
 namespace App\Domain\QuestionManagement;
 
+use App\Domain\Comparable;
 use App\Domain\QuestionManagement\Answer\AnswerId;
 use App\Domain\QuestionManagement\Answer\Vote;
 use App\Domain\UserManagement\User;
@@ -33,7 +34,7 @@ use JsonSerializable;
  *     description="Answer",
  * )
  */
-class Answer implements JsonSerializable
+class Answer implements JsonSerializable, Comparable
 {
     /**
      * @var User
@@ -234,5 +235,21 @@ class Answer implements JsonSerializable
             'datePublished' => $this->datePublished,
             'user' => $this->user
         ];
+    }
+
+    /**
+     * Returns true if other object is equal to current one
+     *
+     * @param mixed $other
+     *
+     * @return bool
+     */
+    public function equalsTo($other): bool
+    {
+        if (! $other instanceof Answer) {
+            return false;
+        }
+
+        return $this->answerId->equalsTo($other->answerId());
     }
 }

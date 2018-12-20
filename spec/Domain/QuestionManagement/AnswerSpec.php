@@ -2,6 +2,7 @@
 
 namespace spec\App\Domain\QuestionManagement;
 
+use App\Domain\Comparable;
 use App\Domain\QuestionManagement\Answer;
 use App\Domain\QuestionManagement\Question;
 use App\Domain\UserManagement\User;
@@ -92,5 +93,12 @@ class AnswerSpec extends ObjectBehavior
             'datePublished' => $this->datePublished(),
             'user' => $user
         ]);
+    }
+
+    function it_can_be_compared_to_other_answer(Answer $other)
+    {
+        $other->answerId()->willReturn($this->answerId()->getWrappedObject());
+        $this->shouldBeAnInstanceOf(Comparable::class);
+        $this->equalsTo($other)->shouldBe(true);
     }
 }

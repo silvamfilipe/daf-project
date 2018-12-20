@@ -11,6 +11,7 @@ namespace App\Infrastructure\HttpKernel\EventListener;
 
 use App\Controller\UserManagement\OAuth2\AuthenticatedControllerInterface;
 use App\Domain\UserManagement\User\UserId;
+use App\Domain\UserManagement\UserIdentifier;
 use App\Domain\UserManagement\UsersRepository;
 use App\Infrastructure\HttpKernel\Oauth2Exception;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -35,17 +36,23 @@ final class ControllerListener
      * @var UsersRepository
      */
     private $users;
+    /**
+     * @var UserIdentifier
+     */
+    private $identifier;
 
     /**
      * ControllerListener
      *
      * @param ResourceServer $resourceServer
      * @param UsersRepository $users
+     * @param UserIdentifier $identifier
      */
-    public function __construct(ResourceServer $resourceServer, UsersRepository $users)
+    public function __construct(ResourceServer $resourceServer, UsersRepository $users, UserIdentifier $identifier)
     {
         $this->resourceServer = $resourceServer;
         $this->users = $users;
+        $this->identifier = $identifier;
     }
 
     public function onKernelController(FilterControllerEvent $event)
@@ -81,5 +88,6 @@ final class ControllerListener
     {
         $user = $this->users->withUserId(new UserId($getUserAttribute));
         $controller->withCurrentUser($user);
+        $this->identifier->withUser($user);
     }
 }

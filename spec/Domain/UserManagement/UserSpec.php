@@ -2,6 +2,7 @@
 
 namespace spec\App\Domain\UserManagement;
 
+use App\Domain\Comparable;
 use App\Domain\UserManagement\User;
 use League\OAuth2\Server\Entities\UserEntityInterface;
 use PhpSpec\ObjectBehavior;
@@ -82,5 +83,12 @@ class UserSpec extends ObjectBehavior
             'name' => $this->name,
             'email' => $this->email,
         ]);
+    }
+
+    function it_can_be_compared_to_other_user(User $other)
+    {
+        $other->userId()->willReturn($this->userId()->getWrappedObject());
+        $this->shouldBeAnInstanceOf(Comparable::class);
+        $this->equalsTo($other)->shouldBe(true);
     }
 }
