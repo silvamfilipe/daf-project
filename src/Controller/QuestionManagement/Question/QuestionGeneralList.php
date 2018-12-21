@@ -48,7 +48,7 @@ class QuestionGeneralList implements AuthenticatedControllerInterface
      */
     public function questionsList(Request $request)
     {
-        return $this->response($this->questionsQuery->__invoke($request->query->all()));
+        return $this->response($this->questionsQuery->data($request->query->all()));
     }
 }
 
