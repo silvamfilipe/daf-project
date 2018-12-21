@@ -53,6 +53,44 @@
             }
         },
         "/answers/{answerId}": {
+            "get": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Retrieve the answer with provided ID",
+                "description": "Returns an answer",
+                "operationId": "getAnswerById",
+                "parameters": [
+                    {
+                        "name": "answerId",
+                        "in": "path",
+                        "description": "ID of answer to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The requested answer",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Answer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
                     "Answers"
@@ -424,7 +462,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "The newlly crated question",
+                        "description": "The requested question",
                         "content": {
                             "application/json": {
                                 "schema": {

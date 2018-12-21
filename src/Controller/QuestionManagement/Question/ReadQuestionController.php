@@ -81,7 +81,7 @@ final class ReadQuestionController implements AuthenticatedControllerInterface
  *     ),
  *     @OA\Response(
  *         response=200,
- *         description="The newlly crated question",
+ *         description="The requested question",
  *         @OA\JsonContent(ref="#/components/schemas/Question")
  *     ),
  *     security={
