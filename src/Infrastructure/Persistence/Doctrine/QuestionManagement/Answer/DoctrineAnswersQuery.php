@@ -1,28 +1,29 @@
 <?php
 
 /**
- * This file is part of S4Skeleton project
+ * This file is part of Forum project
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace App\Infrastructure\Persistence\Doctrine\QuestionManagement\Question;
+namespace App\Infrastructure\Persistence\Doctrine\QuestionManagement\Answer;
 
 use App\Application\Pagination;
 use App\Application\QueryResult;
-use App\Application\QuestionManagement\Model\Question;
-use App\Application\QuestionManagement\Question\QuestionsQuery;
+use App\Application\QuestionManagement\Answer\AnswersQuery;
+use App\Application\QuestionManagement\Model\Answer;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 
 /**
- * Doctrine Questions Query
+ * DoctrineAnswersQuery
  *
- * @package App\Infrastructure\Persistence\Doctrine\QuestionManagement\Question
+ * @package App\Infrastructure\Persistence\Doctrine\QuestionManagement\Answer
  */
-class DoctrineQuestionsQuery implements QuestionsQuery
+final class DoctrineAnswersQuery implements AnswersQuery
 {
+
     /**
      * @var Connection
      */
@@ -50,10 +51,9 @@ class DoctrineQuestionsQuery implements QuestionsQuery
 
         // Set the table and where clause
         $builder
-            ->from('questions_list', 'q');
+            ->from('answers_list', 'a');
 
         $this->checkUserFilter($attributes, $builder);
-        $this->checkTagFilter($attributes, $builder);
         $this->checkPatternFilter($attributes, $builder);
 
         // Retrieve total rows
@@ -69,7 +69,7 @@ class DoctrineQuestionsQuery implements QuestionsQuery
 
         $data = [];
         while ($row = $stm->fetch()) {
-            $data[] = new Question($row);
+            $data[] = new Answer($row);
         }
 
         $result = new QueryResult($data);
@@ -114,7 +114,6 @@ class DoctrineQuestionsQuery implements QuestionsQuery
         $stm = $builder->select('count(*) as rows')->execute();
         $first = $stm->fetch();
         return (int) $first['rows'];
-
     }
 
     /**
@@ -129,22 +128,7 @@ class DoctrineQuestionsQuery implements QuestionsQuery
             return;
         }
 
-        $builder->where('q.userId = ?')->setParameter(0, $attributes['userId']);
-    }
-
-    /**
-     * Adds tag filter
-     *
-     * @param array        $attributes
-     * @param QueryBuilder $builder
-     */
-    private function checkTagFilter(array $attributes, QueryBuilder &$builder)
-    {
-        if (!array_key_exists('tag', $attributes)) {
-            return;
-        }
-
-        $builder->where('q.tags LIKE ?')->setParameter(0, "%{$attributes['tag']}%");
+        $builder->where('a.userId = :userId')->setParameter('userId', $attributes['userId']);
     }
 
     /**
@@ -160,12 +144,7 @@ class DoctrineQuestionsQuery implements QuestionsQuery
         }
 
         $builder
-            ->where('q.tags LIKE :pattern')
-            ->orWhere('q.title LIKE :pattern')
-            ->orWhere('q.email LIKE :pattern')
-            ->orWhere('q.name LIKE :pattern')
-            ->orWhere('q.body LIKE :pattern')
-
+            ->andWhere('a.title LIKE :pattern OR a.email LIKE :pattern OR a.name LIKE :pattern OR a.body LIKE :pattern')
             ->setParameter('pattern', "%{$attributes['pattern']}%")
         ;
     }

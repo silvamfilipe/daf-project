@@ -166,6 +166,64 @@
                 ]
             }
         },
+        "/my/answers": {
+            "get": {
+                "tags": [
+                    "Answers"
+                ],
+                "summary": "Returns a list of answers",
+                "description": "Returns a paginated list of my answers",
+                "operationId": "getMyAnswers",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "current pagination page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "rows",
+                        "in": "query",
+                        "description": "Number of rows per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "pattern",
+                        "in": "query",
+                        "description": "Filters result with a search pattern",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of user answers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnswerList"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "OAuth2.0-Token": [
+                            "forum.usage"
+                        ]
+                    }
+                ]
+            }
+        },
         "/answers/{answerId}/vote-up": {
             "put": {
                 "tags": [
@@ -559,6 +617,64 @@
     },
     "components": {
         "schemas": {
+            "ListingAnswer": {
+                "title": "Answer",
+                "description": "A Flat Answer used in lisings",
+                "properties": {
+                    "answerId": {
+                        "title": "Answer ID",
+                        "description": "Answer ID",
+                        "type": "string"
+                    },
+                    "question": {
+                        "$ref": "#/components/schemas/QuestionTitle"
+                    },
+                    "user": {
+                        "title": "User",
+                        "description": "Answer owner",
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "body": {
+                        "description": "Answer body",
+                        "type": "string",
+                        "example": "An example answer body"
+                    },
+                    "datePublished": {
+                        "$ref": "#/components/schemas/DateTime"
+                    },
+                    "correctAnswer": {
+                        "description": "Correct answer",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "positiveVotes": {
+                        "description": "Positive votes",
+                        "type": "integer",
+                        "example": 35
+                    },
+                    "negativeVotes": {
+                        "description": "Negative votes",
+                        "type": "integer",
+                        "example": 6
+                    }
+                },
+                "type": "object"
+            },
+            "QuestionTitle": {
+                "properties": {
+                    "questionId": {
+                        "description": "/**",
+                        "type": "string",
+                        "example": "06b116fe-e749-4f95-937d-94c5c4adcfbc"
+                    },
+                    "title": {
+                        "description": "/**",
+                        "type": "string",
+                        "example": "Why are you doing it?"
+                    }
+                },
+                "type": "object"
+            },
             "ListingQuestion": {
                 "title": "Question",
                 "description": "A Flat Question used in lisings",
@@ -604,6 +720,31 @@
                         "description": "Answer main body",
                         "type": "string",
                         "example": "A short and smart answer"
+                    }
+                },
+                "type": "object"
+            },
+            "AnswerList": {
+                "properties": {
+                    "attributes": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ListingAnswer"
+                        }
+                    },
+                    "count": {
+                        "type": "integer",
+                        "example": 32
+                    },
+                    "isEmpty": {
+                        "type": "bool",
+                        "example": false
                     }
                 },
                 "type": "object"

@@ -7,64 +7,63 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Controller\QuestionManagement\Question;
+namespace App\Controller\QuestionManagement\Answer;
 
-use App\Application\QuestionManagement\Question\QuestionsQuery;
+use App\Application\QuestionManagement\Answer\AnswersQuery;
 use App\Controller\ApiControllerMethods;
 use App\Controller\UserManagement\OAuth2\AuthenticatedControllerInterface;
 use App\Controller\UserManagement\OAuth2\AuthenticatedControllerMethods;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * MyQuestionsList
+ * MyAnswersController
  *
- * @package App\Controller\QuestionManagement\Question
+ * @package App\Controller\QuestionManagement\Answer
  */
-class MyQuestionsList implements AuthenticatedControllerInterface
+final class MyAnswersController implements AuthenticatedControllerInterface
 {
+
     use AuthenticatedControllerMethods, ApiControllerMethods;
-    /**
-     * @var QuestionsQuery
-     */
-    private $questionsQuery;
 
     /**
-     * Creates a MyQuestionsList
-     *
-     * @param QuestionsQuery $questionsQuery
+     * @var AnswersQuery
      */
-    public function __construct(QuestionsQuery $questionsQuery)
+    private $answersQuery;
+
+    /**
+     * Creates a MyAnswersController
+     *
+     * @param AnswersQuery $answersQuery
+     */
+    public function __construct(AnswersQuery $answersQuery)
     {
-        $this->questionsQuery = $questionsQuery;
+        $this->answersQuery = $answersQuery;
     }
 
     /**
-     * @Route("/my/questions", methods={"GET"})
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/my/answers", methods={"GET"})
      */
-    public function myList(Request $request)
+    public function myList(Request $request): Response
     {
         $attributes = $request->query->all();
         $attributes['userId'] = (string) $this->currentUser()->userId();
-        return $this->response($this->questionsQuery->data($attributes));
+        return $this->response($this->answersQuery->data($attributes));
     }
 }
 
 
 /**
  * @OA\Get(
- *     path="/my/questions",
- *     tags={"Questions"},
- *     summary="Returns a list of questions",
- *     description="Returns a paginated list of my questions",
- *     operationId="getMyQuestions",
- *     @OA\Parameter(
- *         name="tag",
- *         in="query",
- *         description="Tag name to filter",
- *         required=false,
- *         @OA\Schema(type="string")
- *     ),
+ *     path="/my/answers",
+ *     tags={"Answers"},
+ *     summary="Returns a list of answers",
+ *     description="Returns a paginated list of my answers",
+ *     operationId="getMyAnswers",
  *     @OA\Parameter(
  *         name="page",
  *         in="query",
@@ -88,8 +87,8 @@ class MyQuestionsList implements AuthenticatedControllerInterface
  *     ),
  *     @OA\Response(
  *         response=200,
- *         description="A list of user questions",
- *         @OA\JsonContent(ref="#/components/schemas/QuestionList")
+ *         description="A list of user answers",
+ *         @OA\JsonContent(ref="#/components/schemas/AnswerList")
  *     ),
  *     security={
  *         {"OAuth2.0-Token": {"forum.usage"}}
@@ -99,7 +98,7 @@ class MyQuestionsList implements AuthenticatedControllerInterface
 
 /**
  * @OA\Schema(
- *     schema="QuestionList",
+ *     schema="AnswerList",
  *     type="object",
  *     @OA\Property(
  *          property="attributes",
@@ -108,7 +107,7 @@ class MyQuestionsList implements AuthenticatedControllerInterface
  *              type="string"
  *          )
  *     ),
- *     @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/ListingQuestion")),
+ *     @OA\Property(property="data", type="array", @OA\Items(ref="#/components/schemas/ListingAnswer")),
  *     @OA\Property(property="count", type="integer", example=32),
  *     @OA\Property(property="isEmpty", type="bool", example=false),
  * )

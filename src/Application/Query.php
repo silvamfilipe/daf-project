@@ -24,5 +24,5 @@ interface Query
      *
      * @return QueryResult
      */
-    public function __invoke(array $attributes = []): QueryResult;
+    public function data(array $attributes = []): QueryResult;
 }
